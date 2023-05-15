@@ -1,5 +1,8 @@
 package com.storehouse.repo;
 
-public interface OrdersRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
+import com.storehouse.entities.Order;
+
+public interface OrdersRepository extends MongoRepository<Order, Long> {
 
 }
