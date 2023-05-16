@@ -1,6 +1,5 @@
 package com.storehouse.service;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static com.storehouse.entities.Order.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -8,9 +7,7 @@ import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.storehouse.entities.Order;
-import com.storehouse.model.OrderDto;
 import com.storehouse.repo.OrdersRepository;
-
 import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.query.*;
 
@@ -23,6 +20,11 @@ public class OrdersBackOfficeServiceImpl implements OrdersBackOfficeService {
 	MongoTemplate mongoTemplate;
 	@Autowired
 	OrdersRepository repo;
+	
+	@Override
+	public Order getOrder(long orderNumber) {
+		return repo.findById(orderNumber).get();
+	}
 
 	@Override
 	public List<Order> getOpenOrders() {
@@ -32,13 +34,9 @@ public class OrdersBackOfficeServiceImpl implements OrdersBackOfficeService {
 
 	@Override
 	public List<Order> getOrdersByDateWithStatus(LocalDate from, LocalDate to, boolean open) {
-		List<OrderDto> res = new ArrayList<>();
-		if (open == true) {
-			
-		} else if (open == false) {
-			
-		}
-		return null;
+		Query query = new Query().addCriteria(Criteria.where(PLACEMENT_DATE).gte(from)
+				.andOperator(Criteria.where(PLACEMENT_DATE).lte(to)).andOperator(Criteria.where(OPEN).is(open)));
+		return mongoTemplate.find(query, Order.class);
 	}
 
 	@Override
@@ -47,15 +45,16 @@ public class OrdersBackOfficeServiceImpl implements OrdersBackOfficeService {
 	}
 
 	@Override
-	public Order updateOrder(long orderNumber) {
-		// TODO Auto-generated method stub
-		return null;
+	public Order updateOrder(long orderNumber, Order newOrder) {
+		Order existingOrder = repo.findById(orderNumber).get();
+		newOrder.number = existingOrder.number;
+		return repo.save(newOrder);
 	}
 
 	@Override
 	public Order closeOrder(long orderNumber) {
 		Order orderToClose = repo.findById(orderNumber).get();
-		orderToClose.setOpen(false);
+		orderToClose.open = false;
 		return repo.save(orderToClose);
 	}
 

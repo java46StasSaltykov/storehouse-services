@@ -27,10 +27,10 @@ public class OrdersBackOfficeController {
 		return foundOrders.isEmpty() ? null : convertToDto(foundOrders);
 	}
 
-	@GetMapping(value = "/by-date")
-	List<OrderDto> getOrdersByDateWithStatus(LocalDate from, LocalDate to, boolean open) {
-		//TODO
-		return null;
+	@GetMapping(value = "/by-date/from-{from}/to-{to}/status-{open}")
+	List<OrderDto> getOrdersByDateWithStatus(@PathVariable ("from") LocalDate from, @PathVariable ("to") LocalDate to, @PathVariable ("open") boolean open) {
+		List<Order> foundOrders = service.getOrdersByDateWithStatus(from, to, open);
+		return convertToDto(foundOrders);
 	}
 	
 	@PostMapping(value = "/new-order")
@@ -39,13 +39,19 @@ public class OrdersBackOfficeController {
 		return convertToDto(placed);
 	}
 	
-	@PutMapping(value = "/update")
-	OrderDto updateOrder(@PathVariable ("number") long orderNumber) {
-		//TODO
-		return null;
+	@GetMapping(value = "/order/{number}")
+	OrderDto getSingleOrder(@PathVariable ("number") long orderNumber) {
+		Order foundOrder = service.getOrder(orderNumber);
+		return convertToDto(foundOrder);
 	}
 	
-	@DeleteMapping (value = "/close-order")
+	@PutMapping(value = "/update/{number}")
+	OrderDto updateOrder(@PathVariable ("number") long orderNumber, Order newOrder) {
+		Order orderToUpdate = service.updateOrder(orderNumber, newOrder);
+		return convertToDto(orderToUpdate);
+	}
+	
+	@DeleteMapping (value = "/close/{number}")
 	OrderDto closeOrder(@PathVariable ("number") long orderNumber) {
 		Order closed = service.closeOrder(orderNumber);
 		return convertToDto(closed);
@@ -61,8 +67,8 @@ public class OrdersBackOfficeController {
 	}
 
 	private OrderDto convertToDto(Order order) {
-		return new OrderDto(order.getNumber(), order.getPlacementDate(), order.getProduct(), order.getAmount(), order.getMeasurementUnit(),
-				order.getContainerNumber(), order.isOpen());
+		return new OrderDto(order.number, order.placementDate, order.product, order.amount, order.measurementUnit,
+				order.containerNumber, order.open);
 	}
 	
 	private Order convertToEntity(OrderDto order) {

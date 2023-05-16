@@ -3,18 +3,20 @@ package com.storehouse.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "orders")
 public class Order {
 	
-	long number;
-	LocalDate placementDate;
-	String product;
-	int amount;
-	String measurementUnit;
-	int containerNumber;
-	boolean open;
+	@Id
+	public long number;
+	public LocalDate placementDate;
+	public String product;
+	public int amount;
+	public String measurementUnit;
+	public int containerNumber;
+	public boolean open;
 	
 	public static final String NUMBER = "number";
 	public static final String PLACEMENT_DATE = "placementDate";
@@ -33,31 +35,6 @@ public class Order {
 		this.amount = amount;
 		this.measurementUnit = measurementUnit;
 		this.containerNumber = containerNumber;
-		this.open = open;
-	}
-	
-	public long getNumber() {
-		return number;
-	}
-	public LocalDate getPlacementDate() {
-		return placementDate;
-	}
-	public String getProduct() {
-		return product;
-	}
-	public int getAmount() {
-		return amount;
-	}
-	public String getMeasurementUnit() {
-		return measurementUnit;
-	}
-	public int getContainerNumber() {
-		return containerNumber;
-	}
-	public boolean isOpen() {
-		return open;
-	}
-	public void setOpen(boolean open) {
 		this.open = open;
 	}
 
