@@ -86,5 +86,8 @@
 		<module>storehouse-analyzer</module>
 		<module>storehouse-containers-back-office</module>
 		<module>storehouse-orders-back-office</module>
+		<module>storehouse-registrator</module>
+		<module>storehouse-notifier</module>
+		<module>storehouse-order-sender</module>
 	</modules>
 </project>
