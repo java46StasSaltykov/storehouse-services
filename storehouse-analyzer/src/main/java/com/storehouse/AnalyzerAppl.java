@@ -14,7 +14,7 @@ public class AnalyzerAppl {
 	
 	@Autowired
 	StreamBridge streamBridge;
-	@Value("${app.binding.name:lack-out-0}")
+	@Value("${app.binding.name:container-out-0}")
 	String bindingName;
 	AnalyzerService analyzerService;
 
@@ -28,7 +28,10 @@ public class AnalyzerAppl {
 	} 
 	
 	void meaurementAnalyzing(ContainerMeasurementDto measurement) {
-		RefillDto containerToRefill = analyzerService.analyzeMeasurement(measurement);
-		
+		RefillDto refillNeeded = analyzerService.analyzeMeasurement(measurement);
+		if (refillNeeded != null) {
+			streamBridge.send(bindingName, refillNeeded);
+		}
 	}
+	
 }

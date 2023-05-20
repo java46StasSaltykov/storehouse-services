@@ -37,6 +37,8 @@ public class Order {
 		this.containerNumber = containerNumber;
 		this.open = open;
 	}
+	
+	public Order() {};
 
 	@Override
 	public int hashCode() {
