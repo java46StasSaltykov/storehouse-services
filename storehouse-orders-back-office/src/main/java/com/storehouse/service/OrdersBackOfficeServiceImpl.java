@@ -41,7 +41,7 @@ public class OrdersBackOfficeServiceImpl implements OrdersBackOfficeService {
 
 	@Override
 	public Order placeOrder(Order order) {
-		return repo.insert(order);
+		return repo.save(order);
 	}
 
 	@Override

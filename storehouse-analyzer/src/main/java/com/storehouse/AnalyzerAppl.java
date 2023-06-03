@@ -16,6 +16,7 @@ public class AnalyzerAppl {
 	StreamBridge streamBridge;
 	@Value("${app.binding.name:container-out-0}")
 	String bindingName;
+	@Autowired
 	AnalyzerService analyzerService;
 
 	public static void main(String[] args) {
