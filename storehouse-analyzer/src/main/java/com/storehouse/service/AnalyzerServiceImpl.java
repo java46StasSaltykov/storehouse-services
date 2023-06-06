@@ -3,10 +3,12 @@ package com.storehouse.service;
 import com.storehouse.model.RefillDto;
 import com.storehouse.repo.LastMeasurementRepository;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.storehouse.entities.LastMeasurement;
 import com.storehouse.model.ContainerMeasurementDto;
 
+@Service
 public class AnalyzerServiceImpl implements AnalyzerService {
 	
 	@Autowired
